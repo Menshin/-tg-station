@@ -4,6 +4,7 @@
 	icon_state = "cell-off"
 	density = 1
 	anchored = 1.0
+	interact_offline = 1
 	layer = 4
 
 	var/on = 0
@@ -97,11 +98,17 @@
 		user << "Seems empty."
 
 /obj/machinery/atmospherics/unary/cryo_cell/attack_hand(mob/user)
+	if(..())
+		return
+
+	//powerless interaction
 	if(stat & (NOPOWER|BROKEN))
-		if(state_open == 1)
+		user.unset_machine()//essential to prevent infinite loops of opening/closing the machine
+		if(state_open)
 			close_machine()
 		else
 			open_machine()
+
 	else
 		ui_interact(user)
 

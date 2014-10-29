@@ -340,6 +340,7 @@
 	var/locked = 0
 	var/open = 0
 	anchored = 1
+	interact_offline = 1
 	use_power = 1
 	idle_power_usage = 50
 	active_power_usage = 300
@@ -486,6 +487,8 @@
 	qdel(G)
 
 /obj/machinery/dna_scannernew/attack_hand(mob/user)
+	if(..())
+		return
 	toggle_open(user)
 	add_fingerprint(user)
 
