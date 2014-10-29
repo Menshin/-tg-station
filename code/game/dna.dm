@@ -372,6 +372,26 @@
 	for(var/obj/item/weapon/stock_parts/micro_laser/P in component_parts)
 		damage_coeff = P.rating
 
+/obj/machinery/dna_scannernew/update_icon()
+	var/not_running = (stat & (NOPOWER | BROKEN | MAINT)) || panel_open
+
+	//no power or maintenance
+	if(not_running)
+		icon_state = initial(icon_state)+ (open ? "_open" : "") + "_maintenance"
+		return
+
+	//running and someone in there
+	if(occupant)
+		icon_state = initial(icon_state)+ "_occupied"
+		return
+
+	//running
+	icon_state = initial(icon_state)+ (open ? "_open" : "")
+
+/obj/machinery/dna_scannernew/power_change()
+	..()
+	update_icon()
+
 /obj/machinery/dna_scannernew/proc/toggle_open(mob/user=usr)
 	if(!user)
 		return
@@ -415,7 +435,7 @@
 			C.loc = src
 			C.stop_pulling()
 			break
-		icon_state = initial(icon_state) + (occupant ? "_occupied" : "")
+		update_icon()
 
 		// search for ghosts, if the corpse is empty and the scanner is connected to a cloner
 		if(occupant)
@@ -452,7 +472,7 @@
 					occupant.client.eye = occupant
 					occupant.client.perspective = MOB_PERSPECTIVE
 				occupant = null
-			icon_state = "[initial(icon_state)]_open"
+			update_icon()
 		return 1
 
 /obj/machinery/dna_scannernew/relaymove(mob/user as mob)
@@ -463,7 +483,7 @@
 
 /obj/machinery/dna_scannernew/attackby(obj/item/weapon/grab/G, mob/user)
 
-	if(!occupant && default_deconstruction_screwdriver(user, "[initial(icon_state)]_open", "[initial(icon_state)]", G))
+	if(!occupant && default_deconstruction_screwdriver(user, initial(icon_state)+ (open ? "_open" : "") + "_maintenance", initial(icon_state) + (open ? "_open" : ""), G))
 		return
 
 	if(exchange_parts(user, G))
@@ -581,7 +601,7 @@
 	var/occupant_status = "<div class='line'><div class='statusLabel'>Subject Status:</div><div class='statusValue'>"
 	var/scanner_status
 	var/temp_html
-	if(connected)
+	if(connected && !(connected.stat & (NOPOWER|BROKEN|MAINT)))
 		if(connected.occupant)	//set occupant_status message
 			viable_occupant = connected.occupant
 			if(check_dna_integrity(viable_occupant) && (!(NOCLONE in viable_occupant.mutations) || (connected.scan_level == 3)))	//occupent is viable for dna modification

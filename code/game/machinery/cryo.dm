@@ -265,7 +265,7 @@
 	if(state_open)
 		icon_state = "cell-open"
 		return
-	if(on)
+	if(on && !(stat &(NOPOWER|BROKEN|MAINT)))
 		if(occupant)
 			icon_state = "cell-occupied"
 		else
@@ -273,6 +273,9 @@
 	else
 		icon_state = "cell-off"
 
+/obj/machinery/atmospherics/unary/cryo_cell/power_change()
+	..()
+	update_icon()
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/process_occupant()
 	if(air_contents.total_moles() < 10)
