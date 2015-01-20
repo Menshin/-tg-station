@@ -190,7 +190,7 @@
 	name = "foam dart crossbow"
 	desc = "A weapon favored by many overactive children. Ages 8 and up."
 	icon = 'icons/obj/gun.dmi'
-	icon_state = "crossbow"
+	icon_state = "crossbow100"
 	item_state = "crossbow"
 	w_class = 2.0
 	attack_verb = list("attacked", "struck", "hit")
@@ -415,7 +415,7 @@
 	attack_verb = list("attacked", "coloured")
 	var/colour = "#FF0000" //RGB
 	var/drawtype = "rune"
-	var/list/graffiti = list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa")
+	var/list/graffiti = list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","body")
 	var/list/letters = list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 	var/uses = 30 //0 for unlimited uses
 	var/instant = 0

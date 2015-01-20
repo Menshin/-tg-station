@@ -4,7 +4,6 @@
 	icon_state = "cell-off"
 	density = 1
 	anchored = 1.0
-	interact_offline = 1
 	layer = 4
 
 	var/on = 0
@@ -48,6 +47,10 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/process()
 	..()
+	if(occupant)
+		if(occupant.health >= 100)
+			on = 0
+			open_machine()
 	if(!node || !is_operational())
 		return
 	if(!on)
@@ -62,7 +65,6 @@
 		if(occupant)
 			if(occupant.stat != 2)
 				process_occupant()
-
 	if(abs(temperature_archived-air_contents.temperature) > 1)
 		parent.update = 1
 
@@ -103,16 +105,7 @@
 	if(..())
 		return
 
-	//powerless interaction
-	if(!is_operational())
-		user.unset_machine()//essential to prevent infinite loops of opening/closing the machine
-		if(state_open)
-			close_machine()
-		else
-			open_machine()
-
-	else
-		ui_interact(user)
+	ui_interact(user)
 
 
  /**
@@ -174,7 +167,7 @@
 			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list...
 	data["beakerContents"] = beakerContents
 
-	var/datum/nanoui/ui = nanomanager.get_open_ui(user, src, ui_key)
+	var/datum/nanoui/ui = SSnano.get_open_ui(user, src, ui_key)
 	if (!ui)
 		// the ui does not exist, so we'll create a new one
 		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 410)
@@ -205,7 +198,7 @@
 
 	if(href_list["close"])
 		if(close_machine() == usr)
-			var/datum/nanoui/ui = nanomanager.get_open_ui(usr, src, "main")
+			var/datum/nanoui/ui = SSnano.get_open_ui(usr, src, "main")
 			ui.close()
 			on = 1
 	if(href_list["switchOff"])
@@ -240,6 +233,9 @@
 		return
 
 	if(exchange_parts(user, I))
+		return
+
+	if(default_pry_open(I))
 		return
 
 	default_deconstruction_crowbar(I)

@@ -140,13 +140,13 @@ var/global/list/RPD_recipes=list(
 	var/p_class = ATMOS_MODE
 	var/p_disposal = 0
 	var/list/paint_colors = list(
-		"grey"   = "#cccccc",
-		"red"    = "#800000",
-		"blue"   = "#000080",
-		"cyan"   = "#1C94C4",
-		"green"  = "#00CC00",
-		"yellow" = "#FFCC00",
-		"purple" = "#822BFF"
+		"grey"		= rgb(255,255,255),
+		"red"		= rgb(255,0,0),
+		"blue"		= rgb(0,0,255),
+		"cyan"		= rgb(0,256,249),
+		"green"		= rgb(30,255,0),
+		"yellow"	= rgb(255,198,0),
+		"purple"	= rgb(130,43,255)
 	)
 	var/paint_color="grey"
 
@@ -478,7 +478,8 @@ var/global/list/RPD_recipes=list(
 			P.pipe_color = paint_colors[paint_color]
 			P.stored.color = paint_colors[paint_color]
 			user.visible_message("<span class='notice'>[user] paints \the [P] [paint_color].</span>","<span class='notice'>You paint \the [P] [paint_color].</span>")
-			P.update_icon()
+			//P.update_icon()
+			P.update_node_icon()
 			return 1
 		if(EATING_MODE) // Eating pipes
 			// Must click on an actual pipe or meter.
@@ -487,7 +488,7 @@ var/global/list/RPD_recipes=list(
 				playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 				if(do_after(user, 5))
 					activate()
-					del(A)
+					qdel(A)
 					return 1
 				return 0
 
@@ -527,33 +528,18 @@ var/global/list/RPD_recipes=list(
 			user << "<span class='notice'>Building Pipes...</span>"
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 			if(do_after(user, 20))
+				var/obj/structure/disposalconstruct/C = new (A,p_type+1)
+
+				if(!C.can_place())
+					user << "<span class='warning'>There's not enough room to build that here!</span>"
+					qdel(C)
+					return 0
+
 				activate()
-				var/obj/structure/disposalconstruct/C = new (A)
 				// This may still produce runtimes, but I checked and /obj/structure/disposalconstruct
 				//  DOES have a dir property, inherited from /obj/structure. - N3X
 				C.dir=p_dir
-				switch(p_type)
-					if(0)
-						C.ptype = 0
-					if(1)
-						C.ptype = 1
-					if(2)
-						C.ptype = 2
-					if(3)
-						C.ptype = 4
-					if(4)
-						C.ptype = 5
-					if(5)
-						C.ptype = 6
-						C.density = 1
-					if(6)
-						C.ptype = 7
-						C.density = 1
-					if(7)
-						C.ptype = 8
-						C.density = 1
-					if(8)
-						C.ptype = 9
+
 				C.add_fingerprint(usr)
 				C.update()
 				return 1

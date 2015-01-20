@@ -87,7 +87,7 @@
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
 	if(reagents)
-		if(reagents.has_reagent("hyperzine")) // Hyperzine slows slimes down
+		if(reagents.has_reagent("morphine")) // morphine slows slimes down
 			tally *= 2
 
 		if(reagents.has_reagent("frostoil")) // Frostoil also makes them move VEEERRYYYYY slow
@@ -130,13 +130,12 @@
 /mob/living/carbon/slime/Stat()
 	..()
 
-	statpanel("Status")
-	if(is_adult)
-		stat(null, "Health: [round((health / 200) * 100)]%")
-	else
-		stat(null, "Health: [round((health / 150) * 100)]%")
+	if(statpanel("Status"))
+		if(is_adult)
+			stat(null, "Health: [round((health / 200) * 100)]%")
+		else
+			stat(null, "Health: [round((health / 150) * 100)]%")
 
-	if (client.statpanel == "Status")
 		stat(null, "Nutrition: [nutrition]/[get_max_nutrition()]")
 		if(amount_grown >= 10)
 			if(is_adult)
@@ -805,7 +804,7 @@ mob/living/carbon/slime/var/temperature_resistance = T0C+75
 
 	New()
 		..()
-		processing_objects.Add(src)
+		SSobj.processing.Add(src)
 
 /obj/effect/golemrune/process()
 	var/mob/dead/observer/ghost
@@ -917,11 +916,11 @@ mob/living/carbon/slime/var/temperature_resistance = T0C+75
 /obj/item/weapon/reagent_containers/food/snacks/egg/slime/proc/Grow()
 	grown = 1
 	icon_state = "slime egg-grown"
-	processing_objects.Add(src)
+	SSobj.processing.Add(src)
 	return
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/slime/proc/Hatch()
-	processing_objects.Remove(src)
+	SSobj.processing.Remove(src)
 	var/turf/T = get_turf(src)
 	src.visible_message("<span class='warning'> The [name] pulsates and quivers!</span>")
 	spawn(rand(50,100))

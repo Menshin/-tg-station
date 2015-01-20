@@ -1,8 +1,12 @@
+/* I am informed this was added by Giacom to reduce mob-stacking in escape pods.
+It's sorta problematic atm due to the shuttle changes I am trying to do
+Sorry Giacom. Please don't be mad :(
 /mob/living/Life()
 	..()
-	var/area/cur_area = get_area(loc)
-	if(cur_area)
-		cur_area.mob_activate(src)
+	var/area/A = get_area(loc)
+	if(A && A.push_dir)
+		push_mob_back(src, A.push_dir)
+*/
 
 /mob/living/Destroy()
 //	if(mind)
@@ -273,9 +277,6 @@
 
 // MOB PROCS //END
 
-
-/mob/proc/get_contents()
-
 /mob/living/proc/mob_sleep()
 	set name = "Sleep"
 	set category = "IC"
@@ -287,6 +288,7 @@
 		if(alert(src, "You sure you want to sleep for a while?", "Sleep", "Yes", "No") == "Yes")
 			usr.sleeping = 20 //Short nap
 
+/mob/proc/get_contents()
 
 /mob/living/proc/lay_down()
 	set name = "Rest"
@@ -339,6 +341,17 @@
 	var/obj/item/organ/limb/def_zone = ran_zone(t)
 	return def_zone
 
+//damage/heal the mob ears and adjust the deaf amount
+/mob/living/adjustEarDamage(var/damage, var/deaf)
+	ear_damage = max(0, ear_damage + damage)
+	ear_deaf = max(0, ear_deaf + deaf)
+
+//pass a negative argument to skip one of the variable
+/mob/living/setEarDamage(var/damage, var/deaf)
+	if(damage >= 0)
+		ear_damage = damage
+	if(deaf >= 0)
+		ear_deaf = deaf
 
 // heal ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/heal_organ_damage(var/brute, var/burn)

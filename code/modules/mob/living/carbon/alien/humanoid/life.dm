@@ -23,7 +23,7 @@
 
 		//First, resolve location and get a breath
 
-		if(air_master.current_cycle%4==2)
+		if(SSmob.times_fired%4==2)
 			//Only try to take a breath every 4 seconds, unless suffocating
 			spawn(0) breathe()
 
@@ -99,7 +99,7 @@
 			if( health <= 20 && prob(1) )
 				spawn(0)
 					emote("gasp")
-			if(!reagents.has_reagent("inaprovaline"))
+			if(!reagents.has_reagent("epinephrine"))
 				adjustOxyLoss(1)
 			Paralyse(3)
 
@@ -132,11 +132,11 @@
 
 		//Ears
 		if(disabilities & DEAF)		//disabled-deaf, doesn't get better on its own
-			ear_deaf = max(ear_deaf, 1)
-		else if(ear_deaf)			//deafness, heals slowly over time
-			ear_deaf = max(ear_deaf-1, 0)
-		else if(ear_damage < 25)	//ear damage heals slowly under this threshold. otherwise you'll need earmuffs
-			ear_damage = max(ear_damage-0.05, 0)
+			setEarDamage(-1, max(ear_deaf, 1))
+		else
+			adjustEarDamage(-1, (ear_damage < 25 ? -0.05 : 0))
+			//deafness, heals slowly over time
+			//ear damage heals slowly under this threshold. otherwise you'll need earmuffs
 
 		//Other
 		if(stunned)
@@ -238,3 +238,4 @@
 				reset_view(null)
 
 	return 1
+
