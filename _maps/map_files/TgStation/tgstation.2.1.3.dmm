@@ -2110,7 +2110,7 @@
 "aOD" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor/plasteel{icon_state = "bar"},/area/crew_quarters/bar)
 "aOE" = (/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 4},/obj/item/device/radio/intercom{pixel_y = 25},/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plasteel{icon_state = "bar"},/area/crew_quarters/bar)
 "aOF" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/floor/plasteel{icon_state = "bar"},/area/crew_quarters/bar)
-"aOG" = (/obj/machinery/firealarm{dir = 4; pixel_x = 24},/obj/structure/table,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/machinery/chem_dispenser/beer,/turf/simulated/floor/plasteel{icon_state = "bar"},/area/crew_quarters/bar)
+"aOG" = (/obj/machinery/firealarm{dir = 4; pixel_x = 24},/obj/structure/table,/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/obj/machinery/chem_dispenser/soda/beer,/turf/simulated/floor/plasteel{icon_state = "bar"},/area/crew_quarters/bar)
 "aOH" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/wall,/area/crew_quarters/kitchen)
 "aOI" = (/obj/machinery/door/airlock{name = "Kitchen cold room"; req_access_txt = "28"},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/supply/hidden,/turf/simulated/floor/plasteel{icon_state = "showroomfloor"},/area/crew_quarters/kitchen)
 "aOJ" = (/turf/simulated/floor/plasteel{dir = 9; icon_state = "green"},/area/hydroponics)
