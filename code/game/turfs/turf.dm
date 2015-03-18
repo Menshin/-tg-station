@@ -42,7 +42,7 @@
 /turf/attack_hand(mob/user as mob)
 	user.Move_Pulled(src)
 
-/turf/attackby(obj/item/C, mob/user)
+/turf/attackby(obj/item/C, mob/user, params)
 	if(cancable && istype(C, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = C
 		for(var/obj/structure/cable/LC in src)
@@ -146,6 +146,9 @@
 		if(W.lighting_lumcount)				//unless we're being illuminated, don't bother (may be buggy, hard to test)
 			W.UpdateAffectingLights()
 
+	for(var/turf/space/S in range(W,1))
+		S.update_starlight()
+
 	W.levelupdate()
 	W.CalculateAdjacentTurfs()
 	return W
@@ -190,7 +193,7 @@
 	src.cancable = 1//so cables can be laid
 	new /obj/structure/lattice/catwalk(locate(src.x, src.y, src.z) )
 
-/turf/proc/phase_damage_creatures(damage,mob/U = null)//>Ninja Code. Hurts and knocks out creatures on this turf
+/turf/proc/phase_damage_creatures(damage,mob/U = null)//>Ninja Code. Hurts and knocks out creatures on this turf //NINJACODE
 	for(var/mob/living/M in src)
 		if(M==U)
 			continue//Will not harm U. Since null != M, can be excluded to kill everyone.
