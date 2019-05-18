@@ -19,7 +19,7 @@
 	var/list/atom_colours	 //used to store the different colors on an atom
 							//its inherent color, the colored paint applied on it, special color effect etc...
 
-	var/list/priority_overlays	//overlays that should remain on top and not normally removed when using cut_overlay functions, like c4.
+	var/list/external_overlays	//overlays that comes from external sources and shouldn't normally be removed when using cut_overlay functions, like c4.
 	var/list/remove_overlays // a very temporary list of overlays to remove
 	var/list/add_overlays // a very temporary list of overlays to add
 
@@ -111,7 +111,7 @@
 	orbiters = null // The component is attached to us normaly and will be deleted elsewhere
 
 	LAZYCLEARLIST(overlays)
-	LAZYCLEARLIST(priority_overlays)
+	LAZYCLEARLIST(external_overlays)
 
 	QDEL_NULL(light)
 
